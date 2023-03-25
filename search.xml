@@ -25,6 +25,39 @@
       </tags>
   </entry>
   <entry>
+    <title>B端领域化-迁库</title>
+    <url>/2022/05/11/B%E7%AB%AF%E9%A2%86%E5%9F%9F%E5%8C%96-%E8%BF%81%E5%BA%93/</url>
+    <content><![CDATA[<h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>三张表数据2023年均会过亿，目前sql server已无法支持如此大的数据量，需要迁移mysql，并保证支持公司5年内不需要进行数据迁移。</p>
+<span id="more"></span>
+
+<h2 id="技术选型"><a href="#技术选型" class="headerlink" title="技术选型"></a>技术选型</h2><h2 id="分库分表策略"><a href="#分库分表策略" class="headerlink" title="分库分表策略"></a>分库分表策略</h2><h2 id="引入"><a href="#引入" class="headerlink" title="引入"></a>引入</h2><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">@EnableScheduling</span><br><span class="line">@EnableAspectJAutoProxy(proxyTargetClass=true, exposeProxy=true)</span><br><span class="line">@SpringBootApplication</span><br><span class="line">public class StartMain &#123;</span><br><span class="line">    public static void main(String[] args) &#123;</span><br><span class="line">        SpringApplication springApplication = new SpringApplication(StartMain.class);</span><br><span class="line">        springApplication.run(args);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+]]></content>
+      <categories>
+        <category>B端领域化</category>
+      </categories>
+      <tags>
+        <tag>分库分表</tag>
+        <tag>sharding-JDBC</tag>
+        <tag>mysql</tag>
+        <tag>方案</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>sharding-jdbc</title>
+    <url>/2022/05/13/sharding-jdbc/</url>
+    <content><![CDATA[<h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>履约数据表需要迁移mysql，需要进行分库分表设计</p>
+]]></content>
+      <categories>
+        <category>组件学习</category>
+      </categories>
+      <tags>
+        <tag>分库分表</tag>
+        <tag>sharding-JDBC</tag>
+        <tag>中间件</tag>
+        <tag>策略</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>慢SQL优化-order by id limt 1</title>
     <url>/2022/06/16/%E6%85%A2SQL%E4%BC%98%E5%8C%96-order-by-limt/</url>
     <content><![CDATA[<h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>今天线上爆出来一条Mysql的慢sql，好家伙还没切库呢，慢SQL优化先安排上了，醉了。该SQL已经在线上运行了大半个月了，现在才爆出来，挺有学习价值的。</p>
@@ -63,39 +96,6 @@
         <tag>MySQL</tag>
         <tag>SQL优化</tag>
         <tag>索引</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>sharding-jdbc</title>
-    <url>/2022/05/13/sharding-jdbc/</url>
-    <content><![CDATA[<h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>履约数据表需要迁移mysql，需要进行分库分表设计</p>
-]]></content>
-      <categories>
-        <category>组件学习</category>
-      </categories>
-      <tags>
-        <tag>分库分表</tag>
-        <tag>sharding-JDBC</tag>
-        <tag>中间件</tag>
-        <tag>策略</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>B端领域化-迁库</title>
-    <url>/2022/05/11/B%E7%AB%AF%E9%A2%86%E5%9F%9F%E5%8C%96-%E8%BF%81%E5%BA%93/</url>
-    <content><![CDATA[<h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>三张表数据2023年均会过亿，目前sql server已无法支持如此大的数据量，需要迁移mysql，并保证支持公司5年内不需要进行数据迁移。</p>
-<span id="more"></span>
-
-<h2 id="技术选型"><a href="#技术选型" class="headerlink" title="技术选型"></a>技术选型</h2><h2 id="分库分表策略"><a href="#分库分表策略" class="headerlink" title="分库分表策略"></a>分库分表策略</h2><h2 id="引入"><a href="#引入" class="headerlink" title="引入"></a>引入</h2><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">@EnableScheduling</span><br><span class="line">@EnableAspectJAutoProxy(proxyTargetClass=true, exposeProxy=true)</span><br><span class="line">@SpringBootApplication</span><br><span class="line">public class StartMain &#123;</span><br><span class="line">    public static void main(String[] args) &#123;</span><br><span class="line">        SpringApplication springApplication = new SpringApplication(StartMain.class);</span><br><span class="line">        springApplication.run(args);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-]]></content>
-      <categories>
-        <category>B端领域化</category>
-      </categories>
-      <tags>
-        <tag>分库分表</tag>
-        <tag>sharding-JDBC</tag>
-        <tag>mysql</tag>
-        <tag>方案</tag>
       </tags>
   </entry>
 </search>
