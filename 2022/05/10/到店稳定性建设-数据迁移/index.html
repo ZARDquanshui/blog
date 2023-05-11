@@ -14,30 +14,31 @@
 
 
 <link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.css">
   <link rel="stylesheet" href="/lib/pace/pace-theme-minimal.min.css">
   <script src="/lib/pace/pace.min.js"></script>
 
 <script id="hexo-configurations">
     var NexT = window.NexT || {};
-    var CONFIG = {"hostname":"example.com","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+    var CONFIG = {"hostname":"lianlianrong.com","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":true,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
   </script>
 
-  <meta name="description" content="前言目前负责的B端履约流程是整个B端最核心的应用，牵涉的上游会包括订单、交易、供应链、C端等；而整个履约流程会包括预约、排队、施工等多个节点；下游则会影响到结算、客户管理、门店经营等。所以如何保证系统稳定，并且支持业务扩展是目前需要去思考和解决的。">
+  <meta name="description" content="It does not matter how slowly you go so long as you do not stop">
 <meta property="og:type" content="article">
-<meta property="og:title" content="B端领域化-前言、现状与目标">
-<meta property="og:url" content="http://example.com/2022/03/05/B%E7%AB%AF%E9%A2%86%E5%9F%9F%E5%8C%96-%E5%89%8D%E8%A8%80%E3%80%81%E7%8E%B0%E7%8A%B6%E4%B8%8E%E7%9B%AE%E6%A0%87/index.html">
+<meta property="og:title" content="到店稳定性建设-数据迁移">
+<meta property="og:url" content="http://lianlianrong.com/2022/05/10/%E5%88%B0%E5%BA%97%E7%A8%B3%E5%AE%9A%E6%80%A7%E5%BB%BA%E8%AE%BE-%E6%95%B0%E6%8D%AE%E8%BF%81%E7%A7%BB/index.html">
 <meta property="og:site_name" content="LIAN&#39;s BLOG">
-<meta property="og:description" content="前言目前负责的B端履约流程是整个B端最核心的应用，牵涉的上游会包括订单、交易、供应链、C端等；而整个履约流程会包括预约、排队、施工等多个节点；下游则会影响到结算、客户管理、门店经营等。所以如何保证系统稳定，并且支持业务扩展是目前需要去思考和解决的。">
+<meta property="og:description" content="It does not matter how slowly you go so long as you do not stop">
 <meta property="og:locale" content="en_US">
-<meta property="article:published_time" content="2022-03-05T04:39:04.000Z">
-<meta property="article:modified_time" content="2023-03-23T14:34:33.581Z">
+<meta property="article:published_time" content="2022-05-10T12:37:36.000Z">
+<meta property="article:modified_time" content="2023-04-01T08:42:24.541Z">
 <meta property="article:author" content="lianlianrong">
-<meta property="article:tag" content="领域化">
-<meta property="article:tag" content="系统设计">
-<meta property="article:tag" content="规划">
+<meta property="article:tag" content="分库分表">
+<meta property="article:tag" content="mysql">
+<meta property="article:tag" content="方案">
 <meta name="twitter:card" content="summary">
 
-<link rel="canonical" href="http://example.com/2022/03/05/B%E7%AB%AF%E9%A2%86%E5%9F%9F%E5%8C%96-%E5%89%8D%E8%A8%80%E3%80%81%E7%8E%B0%E7%8A%B6%E4%B8%8E%E7%9B%AE%E6%A0%87/">
+<link rel="canonical" href="http://lianlianrong.com/2022/05/10/%E5%88%B0%E5%BA%97%E7%A8%B3%E5%AE%9A%E6%80%A7%E5%BB%BA%E8%AE%BE-%E6%95%B0%E6%8D%AE%E8%BF%81%E7%A7%BB/">
 
 
 <script id="page-configurations">
@@ -50,7 +51,7 @@
   };
 </script>
 
-  <title>B端领域化-前言、现状与目标 | LIAN's BLOG</title>
+  <title>到店稳定性建设-数据迁移 | LIAN's BLOG</title>
   
 
 
@@ -198,7 +199,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2022/03/05/B%E7%AB%AF%E9%A2%86%E5%9F%9F%E5%8C%96-%E5%89%8D%E8%A8%80%E3%80%81%E7%8E%B0%E7%8A%B6%E4%B8%8E%E7%9B%AE%E6%A0%87/">
+    <link itemprop="mainEntityOfPage" href="http://lianlianrong.com/2022/05/10/%E5%88%B0%E5%BA%97%E7%A8%B3%E5%AE%9A%E6%80%A7%E5%BB%BA%E8%AE%BE-%E6%95%B0%E6%8D%AE%E8%BF%81%E7%A7%BB/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.jpg">
@@ -211,7 +212,7 @@
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
-          B端领域化-前言、现状与目标
+          到店稳定性建设-数据迁移
         </h1>
 
         <div class="post-meta">
@@ -221,7 +222,7 @@
               </span>
               <span class="post-meta-item-text">Posted on</span>
 
-              <time title="Created: 2022-03-05 12:39:04" itemprop="dateCreated datePublished" datetime="2022-03-05T12:39:04+08:00">2022-03-05</time>
+              <time title="Created: 2022-05-10 20:37:36" itemprop="dateCreated datePublished" datetime="2022-05-10T20:37:36+08:00">2022-05-10</time>
             </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -239,7 +240,7 @@
                 <i class="fa fa-file-word-o"></i>
               </span>
                 <span class="post-meta-item-text">Symbols count in article: </span>
-              <span>1.2k</span>
+              <span>0</span>
             </span>
             <span class="post-meta-item" title="Reading time">
               <span class="post-meta-item-icon">
@@ -258,18 +259,7 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>目前负责的B端履约流程是整个B端最核心的应用，牵涉的上游会包括订单、交易、供应链、C端等；而整个履约流程会包括预约、排队、施工等多个节点；下游则会影响到结算、客户管理、门店经营等。所以如何保证系统稳定，并且支持业务扩展是目前需要去思考和解决的。</p>
-<span id="more"></span>
-
-<h2 id="业务现状"><a href="#业务现状" class="headerlink" title="业务现状"></a>业务现状</h2><p>主体使用端有四个、核心端是两个，对应于C端与B端。<br>1.C端主要是履约流程的发起，使用者是用户。<br>2.B端主要是履约整个流程的流转，使用者是技师。</p>
-<p>承接业务场景：大方向上分四大类（到店、SAAS、上门以及其他），有部分业务流程是完全隔离开的，有部分复用。</p>
-<h2 id="系统现状"><a href="#系统现状" class="headerlink" title="系统现状"></a>系统现状</h2><p>自从去年年底拆分服务之后，将整个履约流程先划分为领域层和聚合层，其中聚合层后面需要升级为调度层，将履约全流程从原先各业务独立维护、并深度耦合，向各服务独立、由履约层统一调度发展，由履约调度层完成全流程的流转。</p>
-<h3 id="数据层"><a href="#数据层" class="headerlink" title="数据层"></a>数据层</h3><p>1.履约数据目前还是在Sql server统一集群上，同时公司约有一半业务数据也在集群上，及其容易发生连锁反应，导致系统不可用。<br>2.履约三张主表数据目前在8kw（26g）、16kw（35g）、58kw左右（92g），日增数据分别为10w、23w、60w左右。DB负载日益严重，慢sql查询日益增多，整体系统已经处于高危状态。<br>3.业务主表依然是以一张大宽表的方式（约50个字段）来记录业务数据，快照数据与流程数据耦合，表的职责定位不明确。<br>4.数据主要以sql server表做支持，不足以支撑所有业务的查询场景（模糊查询）与接口性能（C端接口999需要50ms）。<br>5.大量外部服务直连本领域表查询数据，影响领域化推进。</p>
-<h3 id="领域层"><a href="#领域层" class="headerlink" title="领域层"></a>领域层</h3><p>1.首先领域层是由原先服务拆分出来的，约有100个领域接口，功能职责不清晰，透出字段冗余，维护起来十分麻烦。<br>2.服务大致情况：11台机器（4核8G），日均QPS约为700（峰值约2000），平响10ms。<br>3.信安团队潜在敏感信息透出问题。</p>
-<h3 id="聚合层"><a href="#聚合层" class="headerlink" title="聚合层"></a>聚合层</h3><p>1.B端系统业务流程复杂不再赘述，并且耦合度及其高，导致在新增业务流程时需要在原有系统上做大的兼容，风险不可控。（这里规划调度层解耦开各个业务，还需要细细思考）。<br>2.现有B端系统中到店关联上下游最为紧密，对于核心接口的依赖降级严重缺失。<br>3.目前核心接口近50，非核心接口近200，其中很多接口性能平响过100ms、999线过500ms，这是严重不达标的，需要治理。<br>4.履约与施工流程的强耦合需要等施工检查域拆分后开始推进解耦。履约与订单域的耦合关系，以及订单域对到店产生的风险需要评估。<br>5.与其他领域的耦合，以及.net接口升级都是需要在考虑范围之内。<br>6.服务详情：14台机器（8核8G），日均QPS约为600（峰值约为1500），平响50ms。</p>
-<h2 id="领域化目标"><a href="#领域化目标" class="headerlink" title="领域化目标"></a>领域化目标</h2><p>2022整体目标是保稳定（慢sql优化，依赖降级，核心接口压测与优化），迁数据（数据迁移（mysql（分库分表），es，redis），直连解耦），领域化（包括依赖他人与被依赖）。另外还有还需要完成全链路密文计划。</p>
-<p>估摸只能推动前两项和全链路密文，先加油吧！</p>
-
+        
     </div>
 
     
@@ -284,7 +274,7 @@
   </li>
   <li class="post-copyright-link">
     <strong>Post link: </strong>
-    <a href="http://example.com/2022/03/05/B%E7%AB%AF%E9%A2%86%E5%9F%9F%E5%8C%96-%E5%89%8D%E8%A8%80%E3%80%81%E7%8E%B0%E7%8A%B6%E4%B8%8E%E7%9B%AE%E6%A0%87/" title="B端领域化-前言、现状与目标">http://example.com/2022/03/05/B端领域化-前言、现状与目标/</a>
+    <a href="http://lianlianrong.com/2022/05/10/%E5%88%B0%E5%BA%97%E7%A8%B3%E5%AE%9A%E6%80%A7%E5%BB%BA%E8%AE%BE-%E6%95%B0%E6%8D%AE%E8%BF%81%E7%A7%BB/" title="到店稳定性建设-数据迁移">http://lianlianrong.com/2022/05/10/到店稳定性建设-数据迁移/</a>
   </li>
   <li class="post-copyright-license">
     <strong>Copyright Notice:  </strong>All articles in this blog are licensed under <a href="https://creativecommons.org/licenses/lianlianrong/4.0/" rel="noopener" target="_blank"><i class="fa fa-fw fa-creative-commons"></i>LIANLIANRONG</a> unless stating additionally.
@@ -295,9 +285,9 @@
 
       <footer class="post-footer">
           <div class="post-tags">
-              <a href="/tags/%E9%A2%86%E5%9F%9F%E5%8C%96/" rel="tag"># 领域化</a>
-              <a href="/tags/%E7%B3%BB%E7%BB%9F%E8%AE%BE%E8%AE%A1/" rel="tag"># 系统设计</a>
-              <a href="/tags/%E8%A7%84%E5%88%92/" rel="tag"># 规划</a>
+              <a href="/tags/%E5%88%86%E5%BA%93%E5%88%86%E8%A1%A8/" rel="tag"># 分库分表</a>
+              <a href="/tags/mysql/" rel="tag"># mysql</a>
+              <a href="/tags/%E6%96%B9%E6%A1%88/" rel="tag"># 方案</a>
           </div>
 
         
@@ -305,10 +295,13 @@
 
         
     <div class="post-nav">
-      <div class="post-nav-item"></div>
       <div class="post-nav-item">
-    <a href="/2022/05/11/B%E7%AB%AF%E9%A2%86%E5%9F%9F%E5%8C%96-%E8%BF%81%E5%BA%93/" rel="next" title="B端领域化-迁库">
-      B端领域化-迁库 <i class="fa fa-chevron-right"></i>
+    <a href="/2022/03/05/B%E7%AB%AF%E5%88%B0%E5%BA%97%E5%BB%BA%E8%AE%BE-%E5%89%8D%E8%A8%80%E3%80%81%E7%8E%B0%E7%8A%B6%E4%B8%8E%E7%9B%AE%E6%A0%87/" rel="prev" title="B端到店建设-前言、现状与目标">
+      <i class="fa fa-chevron-left"></i> B端到店建设-前言、现状与目标
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2022/05/11/%E5%88%B0%E5%BA%97%E7%A8%B3%E5%AE%9A%E6%80%A7%E5%BB%BA%E8%AE%BE-Mysql%E5%88%86%E5%BA%93%E5%88%86%E8%A1%A8%E6%96%B9%E6%A1%88/" rel="next" title="到店稳定性建设-Mysql分库分表方案">
+      到店稳定性建设-Mysql分库分表方案 <i class="fa fa-chevron-right"></i>
     </a></div>
     </div>
       </footer>
@@ -368,7 +361,6 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%89%8D%E8%A8%80"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%9A%E5%8A%A1%E7%8E%B0%E7%8A%B6"><span class="nav-number">2.</span> <span class="nav-text">业务现状</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%B3%BB%E7%BB%9F%E7%8E%B0%E7%8A%B6"><span class="nav-number">3.</span> <span class="nav-text">系统现状</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%95%B0%E6%8D%AE%E5%B1%82"><span class="nav-number">3.1.</span> <span class="nav-text">数据层</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%A2%86%E5%9F%9F%E5%B1%82"><span class="nav-number">3.2.</span> <span class="nav-text">领域层</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%81%9A%E5%90%88%E5%B1%82"><span class="nav-number">3.3.</span> <span class="nav-text">聚合层</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%A2%86%E5%9F%9F%E5%8C%96%E7%9B%AE%E6%A0%87"><span class="nav-number">4.</span> <span class="nav-text">领域化目标</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
@@ -384,7 +376,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">4</span>
+          <span class="site-state-item-count">5</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
@@ -472,6 +464,8 @@
 
   
   <script src="/lib/anime.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/jquery@3/dist/jquery.min.js"></script>
+  <script src="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.js"></script>
   <script src="/lib/velocity/velocity.min.js"></script>
   <script src="/lib/velocity/velocity.ui.min.js"></script>
 

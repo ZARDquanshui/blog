@@ -1,49 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
-    <title>B端领域化-前言、现状与目标</title>
-    <url>/2022/03/05/B%E7%AB%AF%E9%A2%86%E5%9F%9F%E5%8C%96-%E5%89%8D%E8%A8%80%E3%80%81%E7%8E%B0%E7%8A%B6%E4%B8%8E%E7%9B%AE%E6%A0%87/</url>
-    <content><![CDATA[<h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>目前负责的B端履约流程是整个B端最核心的应用，牵涉的上游会包括订单、交易、供应链、C端等；而整个履约流程会包括预约、排队、施工等多个节点；下游则会影响到结算、客户管理、门店经营等。所以如何保证系统稳定，并且支持业务扩展是目前需要去思考和解决的。</p>
-<span id="more"></span>
-
-<h2 id="业务现状"><a href="#业务现状" class="headerlink" title="业务现状"></a>业务现状</h2><p>主体使用端有四个、核心端是两个，对应于C端与B端。<br>1.C端主要是履约流程的发起，使用者是用户。<br>2.B端主要是履约整个流程的流转，使用者是技师。</p>
-<p>承接业务场景：大方向上分四大类（到店、SAAS、上门以及其他），有部分业务流程是完全隔离开的，有部分复用。</p>
-<h2 id="系统现状"><a href="#系统现状" class="headerlink" title="系统现状"></a>系统现状</h2><p>自从去年年底拆分服务之后，将整个履约流程先划分为领域层和聚合层，其中聚合层后面需要升级为调度层，将履约全流程从原先各业务独立维护、并深度耦合，向各服务独立、由履约层统一调度发展，由履约调度层完成全流程的流转。</p>
-<h3 id="数据层"><a href="#数据层" class="headerlink" title="数据层"></a>数据层</h3><p>1.履约数据目前还是在Sql server统一集群上，同时公司约有一半业务数据也在集群上，及其容易发生连锁反应，导致系统不可用。<br>2.履约三张主表数据目前在8kw（26g）、16kw（35g）、58kw左右（92g），日增数据分别为10w、23w、60w左右。DB负载日益严重，慢sql查询日益增多，整体系统已经处于高危状态。<br>3.业务主表依然是以一张大宽表的方式（约50个字段）来记录业务数据，快照数据与流程数据耦合，表的职责定位不明确。<br>4.数据主要以sql server表做支持，不足以支撑所有业务的查询场景（模糊查询）与接口性能（C端接口999需要50ms）。<br>5.大量外部服务直连本领域表查询数据，影响领域化推进。</p>
-<h3 id="领域层"><a href="#领域层" class="headerlink" title="领域层"></a>领域层</h3><p>1.首先领域层是由原先服务拆分出来的，约有100个领域接口，功能职责不清晰，透出字段冗余，维护起来十分麻烦。<br>2.服务大致情况：11台机器（4核8G），日均QPS约为700（峰值约2000），平响10ms。<br>3.信安团队潜在敏感信息透出问题。</p>
-<h3 id="聚合层"><a href="#聚合层" class="headerlink" title="聚合层"></a>聚合层</h3><p>1.B端系统业务流程复杂不再赘述，并且耦合度及其高，导致在新增业务流程时需要在原有系统上做大的兼容，风险不可控。（这里规划调度层解耦开各个业务，还需要细细思考）。<br>2.现有B端系统中到店关联上下游最为紧密，对于核心接口的依赖降级严重缺失。<br>3.目前核心接口近50，非核心接口近200，其中很多接口性能平响过100ms、999线过500ms，这是严重不达标的，需要治理。<br>4.履约与施工流程的强耦合需要等施工检查域拆分后开始推进解耦。履约与订单域的耦合关系，以及订单域对到店产生的风险需要评估。<br>5.与其他领域的耦合，以及.net接口升级都是需要在考虑范围之内。<br>6.服务详情：14台机器（8核8G），日均QPS约为600（峰值约为1500），平响50ms。</p>
-<h2 id="领域化目标"><a href="#领域化目标" class="headerlink" title="领域化目标"></a>领域化目标</h2><p>2022整体目标是保稳定（慢sql优化，依赖降级，核心接口压测与优化），迁数据（数据迁移（mysql（分库分表），es，redis），直连解耦），领域化（包括依赖他人与被依赖）。另外还有还需要完成全链路密文计划。</p>
-<p>估摸只能推动前两项和全链路密文，先加油吧！</p>
-]]></content>
-      <categories>
-        <category>B端领域化</category>
-      </categories>
-      <tags>
-        <tag>领域化</tag>
-        <tag>系统设计</tag>
-        <tag>规划</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>B端领域化-迁库</title>
-    <url>/2022/05/11/B%E7%AB%AF%E9%A2%86%E5%9F%9F%E5%8C%96-%E8%BF%81%E5%BA%93/</url>
-    <content><![CDATA[<h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>三张表数据2023年均会过亿，目前sql server已无法支持如此大的数据量，需要迁移mysql，并保证支持公司5年内不需要进行数据迁移。</p>
-<span id="more"></span>
-
-<h2 id="技术选型"><a href="#技术选型" class="headerlink" title="技术选型"></a>技术选型</h2><h2 id="分库分表策略"><a href="#分库分表策略" class="headerlink" title="分库分表策略"></a>分库分表策略</h2><h2 id="引入"><a href="#引入" class="headerlink" title="引入"></a>引入</h2><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">@EnableScheduling</span><br><span class="line">@EnableAspectJAutoProxy(proxyTargetClass=true, exposeProxy=true)</span><br><span class="line">@SpringBootApplication</span><br><span class="line">public class StartMain &#123;</span><br><span class="line">    public static void main(String[] args) &#123;</span><br><span class="line">        SpringApplication springApplication = new SpringApplication(StartMain.class);</span><br><span class="line">        springApplication.run(args);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-]]></content>
-      <categories>
-        <category>B端领域化</category>
-      </categories>
-      <tags>
-        <tag>分库分表</tag>
-        <tag>sharding-JDBC</tag>
-        <tag>mysql</tag>
-        <tag>方案</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>sharding-jdbc</title>
+    <title>分库分表sharding-jdbc</title>
     <url>/2022/05/13/sharding-jdbc/</url>
     <content><![CDATA[<h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>履约数据表需要迁移mysql，需要进行分库分表设计</p>
 ]]></content>
@@ -78,7 +36,9 @@
    看了下具体报错是由于Mysql连接池与java服务超时了。极有可能是慢sql查询超时导致的连接断掉了。
 
 <ol start="2">
-<li><p>排查日志,elk上拿到sql参数explain了下，执行计划如下：<br><img src="https://lian-blog-image.oss-cn-shanghai.aliyuncs.com/image/%E5%B1%8F%E5%B9%95%E6%88%AA%E5%9B%BE_20230218_115018.png">possible_keys有：biz索引，create_time索引，userId索引，status索引。走了索引的呀，多次执行换了下参数都能命中userId或者create_time索引。</p>
+<li><p>排查日志,elk上拿到sql参数explain了下，执行计划如下：</p>
+<img src="https://lian-blog-image.oss-cn-shanghai.aliyuncs.com/image/%E5%B1%8F%E5%B9%95%E6%88%AA%E5%9B%BE_20230218_115018.png" class="nofancybox" />
+possible_keys有：biz索引，create_time索引，userId索引，status索引。走了索引的呀，多次执行换了下参数都能命中userId或者create_time索引。
 </li>
 <li><p>从RDS上拿到了该sql的执行情况，信息有这么几个：大多数执行时间不会超过100ms，扫描行数为500左右；而极端的慢sql会执行14s，扫描行数是300w+（也就是全表扫描）。结合上面的执行情况可以知道极端sql是没有走到possible_keys中的索引，因为命中这些索引都不会走全表。另外注意到返回行数是0。</p>
 </li>
@@ -96,6 +56,83 @@
         <tag>MySQL</tag>
         <tag>SQL优化</tag>
         <tag>索引</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>B端到店建设-前言、现状与目标</title>
+    <url>/2022/03/05/B%E7%AB%AF%E5%88%B0%E5%BA%97%E5%BB%BA%E8%AE%BE-%E5%89%8D%E8%A8%80%E3%80%81%E7%8E%B0%E7%8A%B6%E4%B8%8E%E7%9B%AE%E6%A0%87/</url>
+    <content><![CDATA[<h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>目前负责的B端履约流程是整个B端最核心的应用，牵涉的上游会包括订单、交易、供应链、C端等；而整个履约流程会包括预约、排队、施工等多个节点；下游则会影响到结算、客户管理、门店经营等。所以如何保证系统稳定，并且支持业务扩展是目前需要去思考和解决的。</p>
+<span id="more"></span>
+
+<h2 id="业务现状"><a href="#业务现状" class="headerlink" title="业务现状"></a>业务现状</h2><p>主体使用端有四个、核心端是两个，对应于C端与B端。</p>
+<ol>
+<li>C端主要是履约流程的发起，使用者是<font color='red'>用户</font>。</li>
+<li>B端主要是履约整个流程的流转，使用者是<font color='red'>技师</font>。</li>
+</ol>
+<p>承接业务场景：大方向上分四大类（到店、SAAS、上门以及其他），有部分业务流程是完全隔离开的，有部分复用。</p>
+<h2 id="系统现状"><a href="#系统现状" class="headerlink" title="系统现状"></a>系统现状</h2><p>自从去年年底拆分服务之后，将整个履约流程先划分为领域层和聚合层，其中聚合层后面需要升级为调度层，将履约全流程从原先各业务独立维护、并深度耦合，向各服务独立、由履约层统一调度发展，由履约调度层完成全流程的流转。</p>
+<h3 id="数据层"><a href="#数据层" class="headerlink" title="数据层"></a>数据层</h3><ol>
+<li>履约数据目前还是在Sql Server统一集群上，同时公司约有一半业务数据也在集群上，及其容易发生连锁反应，导致系统不可用。</li>
+<li>履约三张主表数据目前在8kw（26g）、16kw（35g）、58kw左右（92g），日增数据分别为10w、23w、60w左右。DB负载日益严重，慢sql查询日益增多，整体系统已经处于高危状态。</li>
+<li>业务主表依然是以一张大宽表的方式（约50个字段）来记录业务数据，快照数据与流程数据耦合，表的职责定位不明确。</li>
+<li>数据主要以sql server表做支持，不足以支撑所有业务的查询场景（模糊查询）与接口性能（C端接口999需要50ms）。</li>
+<li>大量外部服务直连本领域表查询数据，影响领域化推进。</li>
+</ol>
+<h3 id="领域层"><a href="#领域层" class="headerlink" title="领域层"></a>领域层</h3><ol>
+<li>首先领域层是由原先服务拆分出来的，约有100个领域接口，功能职责不清晰，透出字段冗余，维护起来十分麻烦。</li>
+<li>服务大致情况：11台机器（4核8G），日均QPS约为700（峰值约2000），平响10ms。</li>
+<li>信安团队潜在敏感信息透出问题。</li>
+</ol>
+<h3 id="聚合层"><a href="#聚合层" class="headerlink" title="聚合层"></a>聚合层</h3><ol>
+<li>B端系统业务流程复杂不再赘述，并且耦合度及其高，导致在新增业务流程时需要在原有系统上做大的兼容，风险不可控。（这里规划调度层解耦开各个业务，还需要细细思考）。</li>
+<li>现有B端系统中到店关联上下游最为紧密，对于核心接口的依赖降级严重缺失。</li>
+<li>目前核心接口近50，非核心接口近200，其中很多接口性能平响过100ms、999线过500ms，这是严重不达标的，需要治理。</li>
+<li>履约与施工流程的强耦合需要等施工检查域拆分后开始推进解耦。履约与订单域的耦合关系，以及订单域对到店产生的风险需要评估。</li>
+<li>与其他领域的耦合，以及.net接口升级都是需要在考虑范围之内。</li>
+<li>服务详情：14台机器（8核8G），日均QPS约为600（峰值约为1500），平响50ms。</li>
+</ol>
+<h2 id="领域化目标"><a href="#领域化目标" class="headerlink" title="领域化目标"></a>领域化目标</h2><p>2022整体目标是保稳定（慢sql优化，依赖降级，核心接口压测与优化），迁数据（数据迁移（mysql（分库分表），es，redis），直连解耦），领域化（包括依赖他人与被依赖）。另外还有还需要完成全链路密文计划。</p>
+<p>估摸只能推动前两项和全链路密文，先加油吧！</p>
+]]></content>
+      <categories>
+        <category>B端领域化</category>
+      </categories>
+      <tags>
+        <tag>领域化</tag>
+        <tag>系统设计</tag>
+        <tag>规划</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>到店稳定性建设-数据迁移</title>
+    <url>/2022/05/10/%E5%88%B0%E5%BA%97%E7%A8%B3%E5%AE%9A%E6%80%A7%E5%BB%BA%E8%AE%BE-%E6%95%B0%E6%8D%AE%E8%BF%81%E7%A7%BB/</url>
+    <content><![CDATA[]]></content>
+      <categories>
+        <category>B端领域化</category>
+      </categories>
+      <tags>
+        <tag>分库分表</tag>
+        <tag>mysql</tag>
+        <tag>方案</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>到店稳定性建设-Mysql分库分表方案</title>
+    <url>/2022/05/11/%E5%88%B0%E5%BA%97%E7%A8%B3%E5%AE%9A%E6%80%A7%E5%BB%BA%E8%AE%BE-Mysql%E5%88%86%E5%BA%93%E5%88%86%E8%A1%A8%E6%96%B9%E6%A1%88/</url>
+    <content><![CDATA[<h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>三张表数据2023年均会过亿，目前sql server已无法支持如此大的数据量，需要迁移数据库，并保证支持公司5年内不需要进行数据迁移。</p>
+<span id="more"></span>
+<p>首先，正常情况下能不分库分表就不分库分表。分库分表会带来很多问题，比如分布式事务、全局的唯一性id、结果集的合并等等。<br>那什么是分库分表呢？分库分表实际就是根据某种规则将数据拆分到不同的库表中，再按照对应规则读取出来的过程。</p>
+<p>实际上数据拆分可以分为”只分库不分表”、”只分表不分库”、以及”既分库又分表”三种情况。</p>
+<h2 id="技术选型"><a href="#技术选型" class="headerlink" title="技术选型"></a>技术选型</h2><h2 id="分库分表策略"><a href="#分库分表策略" class="headerlink" title="分库分表策略"></a>分库分表策略</h2><h2 id="引入"><a href="#引入" class="headerlink" title="引入"></a>引入</h2><figure class="highlight java"><figcaption><span>引入参数</span></figcaption><table><tr><td class="code"><pre><span class="line"><span class="meta">@EnableScheduling</span></span><br><span class="line"><span class="meta">@EnableAspectJAutoProxy(proxyTargetClass=true, exposeProxy=true)</span></span><br><span class="line"><span class="meta">@SpringBootApplication</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">StartMain</span> &#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">main</span><span class="params">(String[] args)</span> &#123;</span><br><span class="line">        <span class="type">SpringApplication</span> <span class="variable">springApplication</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">SpringApplication</span>(StartMain.class);</span><br><span class="line">        springApplication.run(args);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+]]></content>
+      <categories>
+        <category>B端领域化</category>
+      </categories>
+      <tags>
+        <tag>分库分表</tag>
+        <tag>sharding-JDBC</tag>
+        <tag>mysql</tag>
+        <tag>方案</tag>
       </tags>
   </entry>
 </search>
